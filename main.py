@@ -72,21 +72,26 @@ easygui.msgbox('User:'+user+'\n'+'Card:'+card+'\n'+'Balance:'+bal)
 
 OPERATIONS.write('User: '+user+'\n')
 
-z=easygui.enterbox('What do you want to do?'+'\n'+'"Get"+summ to get money from your card.'+'\n'+'"Get all" to get all money from your card.'+'\n'+'"Put"+summ to put money on your card.'+'\n'+'"Balance" to know your balance.'+'\n'+'"Exit" to finish work.')  
-while z!='Exit':
+z=easygui.enterbox('What do you want to do?'+'\n'+'"Get" + summ to get money from your card.'+'\n'+'"Get all" to get all money from your card.'+'\n'+'"Put" + summ to put money on your card.'+'\n'+'"Balance" to know your balance.'+'\n'+'"Send" + card number + summ to send your money to someone'+'"Exit" or "End" to finish work.')  
+while z!='Exit' or z!='exit' or z!='end' or z!='End':
     s=z.split()
-    if s[0]=='Put':
+    if s[0]=='Put' or s[0]=='put':
         bal=str(int(bal)+int(s[1]))
         z=easygui.enterbox('Done. Your balance now: '+bal)
-    elif z=='Get all':
+    elif z=='Get all' or z=='get all':
         bal='0'
         z=easygui.enterbox('Done. Your balance now: '+bal)
-    elif s[0]=='Get':
+    elif s[0]=='Get' or s[0]=='get':
         if int(s[1])>int(bal):
             z=easygui.enterbox('ERROR. Money limit: '+bal)
         else:
             bal=str(int(bal)-int(s[1]))
             z=easygui.enterbox('Done. Your balance now: '+bal)
+    elif s[0]=='Send' or s[0]=='send':
+        bal=str(int(bal)-int(s[2]))
+    
+    
+    
     elif s[0]=='Balance':
         z=easygui.enterbox('Your balance now: '+bal)
     else:
