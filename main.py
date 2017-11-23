@@ -89,9 +89,11 @@ while z!='Exit' or z!='exit' or z!='end' or z!='End':
             z=easygui.enterbox('Done. Your balance now: '+bal)
     elif s[0]=='Send' or s[0]=='send':
         bal=str(int(bal)-int(s[2]))
-    
-    
-    
+        z=easygui.enterbox('Done. You have sent: '+s[2]+'\n'+'Your balance now:'+bal)
+        
+        
+        
+        
     elif s[0]=='Balance':
         z=easygui.enterbox('Your balance now: '+bal)
     else:
