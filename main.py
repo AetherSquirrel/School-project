@@ -21,7 +21,7 @@ operations=OPERATIONS.readlines()
 BALANCE1=open('balances1.txt','r')
 balance=BALANCE1.readlines()
 BALANCE1.close()
-#print(balance)
+print(balance)
 
 BALANCE2=open('balances.txt','w')
 
@@ -90,15 +90,18 @@ while z!='Exit' or z!='exit' or z!='end' or z!='End':
     elif s[0]=='Send' or s[0]=='send':
         bal=str(int(bal)-int(s[2]))
         z=easygui.enterbox('Done. You have sent: '+s[2]+'\n'+'Your balance now:'+bal)
-        for i in range cards1:
+        for i in range(len(cards1)):
             if cards1[i][1]==s[1]:
                 cashto=s[1]
                 cashnum=i
                 break
-                
-        
-        
-        
+            balance[i][1]+=s[2]
+            
+            
+            
+            
+            
+            
     elif s[0]=='Balance':
         z=easygui.enterbox('Your balance now: '+bal)
     else:
