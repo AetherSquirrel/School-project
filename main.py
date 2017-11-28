@@ -89,16 +89,16 @@ while z!='Exit' or z!='exit' or z!='end' or z!='End':
             z=easygui.enterbox('Done. Your balance now: '+bal)
     elif s[0]=='Send' or s[0]=='send':
         bal=str(int(bal)-int(s[2]))
-        z=easygui.enterbox('Done. You have sent: '+s[2]+'\n'+'Your balance now:'+bal)
         for i in range(len(cards1)):
             if cards1[i][1]==s[1]:
                 cashto=s[1]
                 cashnum=i
+                balance[i][1]+=s[2]
                 break
-            balance[i][1]+=s[2]
+        z=easygui.enterbox('Done. You have sent: '+s[2]+'\n'+'Your balance now:'+bal)    
             
             
-            
+      #почему эта падла не работает      
             
             
             
