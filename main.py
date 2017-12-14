@@ -1,5 +1,5 @@
-import datetime
-import easygui
+from datetime import datetime
+from easygui import *
 
 USERS1=open('users.txt','r')
 USERS2=open('users.txt','a+')
@@ -28,29 +28,31 @@ BALANCE2=open('balances.txt','w')
 for i in range(len(balance)):
     balance[i]=balance[i].split(':: ')
 
-user=easygui.enterbox("Input user: ")
+user=enterbox("Input user: ")
 z=1
 q=[]
 
-for i in range(len(users1)):
-    if users1[i][1]==user or users1[i][1]==user+'\n':
-        q.append(1)
-
+try:
+    for i in range(len(users1)):
+        if users1[i][1]==user or users1[i][1]==user+'\n':  
+            q.append(1)
+except:
+    None
 if len(q)==0: 
     
-    card=easygui.enterbox('Not registered.'+'\n'+"Input card: ")
+    card=enterbox('Not registered.'+'\n'+"Input card: ")
     try: 
         s=int(card)
         z=1
     except: z=0
     while len(card)!=8 or not z: 
-        easygui.msgbox('ERROR. Not a number.')
-        card=easygui.enterbox("Input card: ")
+        msgbox('ERROR. Not a number.')
+        card=enterbox("Input card: ")
         try: 
             s=int(card)
             z=1
         except: z=0        
-    easygui.msgbox('OK. Creating...')
+    msgbox('OK. Creating...')
     USERS2.write(str((len(users1))+1)+':: ')
     USERS2.write(user+'\n')
     CARDS2.write(str((len(cards1))+1)+':: ')
@@ -58,7 +60,7 @@ if len(q)==0:
     bal=str(0)
 elif len(q)>1:
     
-    card=easygui.enterbox('Oops... Do you have a clone?'+'\n'+"Input card to identificate: ")
+    card=enterbox('Oops... Do you have a clone?'+'\n'+"Input card to identificate: ")
     o=q[0]-1
     bal=balance[o][1]
 else:
@@ -66,28 +68,39 @@ else:
     card=cards1[o][1]
     bal=balance[o][1]
     
-easygui.msgbox('OK. Wait a second...'+'\n'+'Ready to work.')
+msgbox('OK. Wait a second...'+'\n'+'Ready to work.')
 
-easygui.msgbox('User:'+user+'\n'+'Card:'+card+'\n'+'Balance:'+bal)
+msgbox('User:'+user+'\n'+'Card:'+card+'\n'+'Balance:'+bal)
 
 OPERATIONS.write('User: '+user+'\n')
 
-z=easygui.enterbox('What do you want to do?'+'\n'+'"Get" + summ to get money from your card.'+'\n'+'"Get all" to get all money from your card.'+'\n'+'"Put" + summ to put money on your card.'+'\n'+'"Balance" to know your balance.'+'\n'+'"Send" + card number + summ to send your money to someone'+'"Exit" or "End" to finish work.')  
-while z!='Exit' or z!='exit' or z!='end' or z!='End':
-    s=z.split()
-    if s[0]=='Put' or s[0]=='put':
+f=enterbox('What do you want to do?'+'\n'+'"Get" + summ to get money from your card.'+'\n'+'"Get all" to get all money from your card.'+'\n'+'"Put" + summ to put money on your card.'+'\n'+'"Balance" to know your balance.'+'\n'+'"Send" + card number + summ to send your money to someone'+'\n'+'"Exit" or "End" to finish work.')  
+
+f=f.lower()
+print(f)
+while f!='exit':
+    f=f.lower()
+    s=f.split()
+    if s[0]=='put':
         bal=str(int(bal)+int(s[1]))
-        z=easygui.enterbox('Done. Your balance now: '+bal)
-    elif z=='Get all' or z=='get all':
+        f=enterbox('Done. Your balance now: '+bal)
+        
+    elif f=='get all':
         bal='0'
-        z=easygui.enterbox('Done. Your balance now: '+bal)
-    elif s[0]=='Get' or s[0]=='get':
+        f=enterbox('Done. Your balance now: '+bal)
+        
+    elif s[0]=='get':
         if int(s[1])>int(bal):
-            z=easygui.enterbox('ERROR. Money limit: '+bal)
+            f=enterbox('ERROR. Money limit: '+bal)
         else:
             bal=str(int(bal)-int(s[1]))
-            z=easygui.enterbox('Done. Your balance now: '+bal)
-    elif s[0]=='Send' or s[0]=='send':
+            f=enterbox('Done. Your balance now: '+bal)
+            
+    elif s[0]=='send':
+        if int(s[2])>int(bal):
+                    f=enterbox('ERROR. Money limit: '+bal)        
+        if len(str(s[1]))!=8: 
+            f=enterbox('ERROR')
         bal=str(int(bal)-int(s[2]))
         for i in range(len(cards1)):
             if cards1[i][1]==s[1]:
@@ -95,27 +108,25 @@ while z!='Exit' or z!='exit' or z!='end' or z!='End':
                 cashnum=i
                 balance[i][1]+=s[2]
                 break
-        z=easygui.enterbox('Done. You have sent: '+s[2]+'\n'+'Your balance now:'+bal)    
-            
-            
-      #почему эта падла не работает      
-            
-            
-            
-    elif s[0]=='Balance':
-        z=easygui.enterbox('Your balance now: '+bal)
+        f=enterbox('Done. You have sent: '+s[2]+'\n'+'Your balance now:'+bal)    
+              
+    elif s[0]=='balance':
+        f=enterbox('Your balance now: '+bal)
     else:
-        z=easygui.enterbox('Incorrect command.')
-    now=datetime.datetime.now()
-    OPERATIONS.write(z+' | '+(now.strftime("%d-%m-%Y %H:%M"))+'\n')
-balance[o][1]=str(int(bal))+'\n'
-for i in range(len(balance)):
-    BALANCE2.write(balance[i][0]+':: '+balance[i][1])
+        f=enterbox('Incorrect command.')
+    now=datetime.now()
+    OPERATIONS.write(f+' | '+(now.strftime("%d-%m-%Y %H:%M"))+'\n')
+try:
+    balance[o][1]=str(int(bal))+'\n'
+    for i in range(len(balance)):
+        BALANCE2.write(balance[i][0]+':: '+balance[i][1])
 
-USERS2.close()
-CARDS2.close()
-OPERATIONS.close()
-BALANCE2.close()
-BALANCEZ=open('balances1.txt','w')
-for i in range(len(balance)):
-    BALANCEZ.write(balance[i][0]+':: '+balance[i][1])
+    USERS2.close()
+    CARDS2.close()
+    OPERATIONS.close()
+    BALANCE2.close()
+    BALANCEZ=open('balances1.txt','w')
+    for i in range(len(balance)):
+        BALANCEZ.write(balance[i][0]+':: '+balance[i][1])
+except:
+    None
